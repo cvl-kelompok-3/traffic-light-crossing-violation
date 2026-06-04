@@ -1,57 +1,57 @@
 # Multi-Scenario Adaptive Traffic Light Crossing Violation Detection System
 
-Sistem deteksi pelanggaran lampu lalu lintas berbasis *computer vision* yang dirancang secara adaptif untuk mengatasi kondisi infrastruktur jalan raya yang bervariasi (seperti marka jalan pudar, ketiadaan lampu lalu lintas, hingga guncangan kamera). Sistem ini secara otomatis menganalisis kondisi lingkungan visual secara *real-time* dan memilih rute pemrosesan melalui salah satu dari tiga skenario deteksi yang paling optimal.
+An adaptive computer vision-based traffic light violation detection system designed to gracefully handle varying road infrastructure conditions, such as faded road markings, absence of traffic lights, and camera shake. This system automatically assesses real-time visual environmental conditions and routes processing through one of three optimal adaptive detection scenarios.
 
-## 🌟 Fitur Utama
+## 🌟 Key Features
 
-* **Quick Scan Module**: Otomasi analisis pada 30 *frame* pertama untuk menilai ketersediaan infrastruktur (menghitung lampu lalu lintas dan *zebra cross*) serta mendeteksi stabilitas kamera menggunakan metode *Lucas-Kanade Optical Flow*.
+* **Quick Scan Module**: Automatically analyzes the first 30 frames to evaluate infrastructure availability by counting traffic lights and zebra crossings, and assesses camera stability using the Lucas-Kanade Optical Flow method.
 * **Adaptive Multi-Scenario Architecture**:
-    * **Skenario 1 (Complete Infrastructure)**: Melakukan pemetaan lintasan spasial (*spatial-based trajectory mapping*) saat infrastruktur lengkap (lampu & marka terlihat jelas).
-    * **Skenario 2 (Partial Infrastructure/Dynamic Camera)**: Menggunakan inferensi zona virtual untuk mendeduksi status lampu dari rasio kendaraan berhenti vs bergerak saat kondisi infrastruktur tidak lengkap atau kamera tidak stabil.
-    * **Skenario 3 (Pure Behavioral Consensus)**: Beroperasi 100% tanpa infrastruktur fisik dengan mengandalkan konsensus perilaku kendaraan kolektif (membentuk *persistent virtual anchor line*) untuk mendeteksi pelanggaran.
-* **Vehicle Coordinate Stabilization**: Penerapan *Exponential Moving Average* (EMA) filter (koefisien 0.7) untuk menghilangkan *jitter* pada *bounding box* hasil deteksi YOLO agar kalkulasi kecepatan jauh lebih akurat.
-* **Automated Evidence Export**: Otomatis meng-*capture frame* pelanggaran lengkap dengan visualisasi kotak merah muda pada pelanggar dan mengemasnya ke dalam format `.zip` (lengkap per ID kendaraan dan *timestamp*).
+    * **Scenario 1 (Complete Infrastructure)**: Performs spatial-based trajectory mapping when the infrastructure is complete and clearly visible.
+    * **Scenario 2 (Partial Infrastructure/Dynamic Camera)**: Uses virtual zone inference to deduce traffic light status based on the ratio of stopped versus moving vehicles when infrastructure is incomplete or the camera is unstable.
+    * **Scenario 3 (Pure Behavioral Consensus)**: Operates entirely without physical infrastructure by relying on collective vehicle behavior consensus to form a persistent virtual anchor line for violation detection.
+* **Vehicle Coordinate Stabilization**: Applies an Exponential Moving Average (EMA) filter with a 0.7 coefficient to eliminate bounding box jitter from YOLO detections, enabling highly accurate velocity calculations.
+* **Automated Evidence Export**: Automatically captures violation frames complete with a red bounding box visualization on the violator, and archives them in a `.zip` format complete with vehicle ID and timestamp.
 
-## 🛠️ Arsitektur Teknologi
+## 🛠️ Technology Stack
 
-* **Deteksi Objek**: Dual YOLOv8 (Model YOLOv8m standar untuk klasifikasi kendaraan & lampu lalu lintas; Model Custom YOLOv8s untuk klasifikasi *zebra cross* dan *stop line*).
-* **Pelacakan Multi-Objek (MOT)**: ByteTrack (mengelola lintasan dan penetapan ID dinamis).
-* **Klasifikasi Warna**: HSV Color Space Segmentation (tahan terhadap variasi pencahayaan).
-* **Library Utama**: Python 3.x, Ultralytics, PyTorch, OpenCV, Numpy, Roboflow.
+* **Object Detection**: Dual YOLOv8 models, consisting of a standard YOLOv8m for classifying vehicles and traffic lights, and a Custom YOLOv8s for classifying zebra crossings and stop lines.
+* **Multi-Object Tracking (MOT)**: ByteTrack for managing trajectories and dynamic ID assignments without heavy computational overhead.
+* **Color Classification**: HSV Color Space Segmentation, selected for its robustness to lighting variations.
+* **Core Libraries**: Python 3.x, Ultralytics, PyTorch, OpenCV, Numpy, and Roboflow.
 
-## 📦 Prasyarat & Instalasi
+## 📦 Prerequisites & Installation
 
-Secara *default*, lingkungan pengembangan sistem ini menggunakan Kaggle GPU infrastructure (Tesla P100/T4) untuk mencapai stabilitas 24-30 fps. Namun, tahap *inference* juga bisa dieksekusi dengan baik di memori lokal (*local environment*) yang cukup mumpuni, seperti *device* dengan kapasitas RAM 16GB.
+By default, this system's development environment utilizes Kaggle GPU infrastructure (Tesla P100/T4) to achieve a stable 24-30 fps. However, the inference stage can also be smoothly executed in a capable local environment, such as a device with 16GB RAM.
 
-1. Clone repository ini:
-   ```bash
-   git clone [https://github.com/username/repo-kamu.git](https://github.com/username/repo-kamu.git)
-   cd repo-kamu
+1. Clone this repository:
+```bash
+   git clone [https://github.com/username/your-repo.git](https://github.com/username/your-repo.git)
+   cd your-repo
    ```
 
-2. Instal seluruh dependensi yang dibutuhkan:
-   ```bash
+2. Install all required dependencies:
+```bash
    pip install ultralytics roboflow opencv-python-headless numpy torch
    ```
 
-## 🚀 Cara Penggunaan
+## 🚀 Usage Guide
 
-Sistem ini didesain agar sepenuhnya otomatis. Kamu hanya perlu menjalankan skrip Master Code untuk mendeteksi video secara adaptif.
+This system is designed to be fully automated. You only need to run the Master Code script to detect violations adaptively.
 
-1. Pastikan file model sudah berada di dalam direktori yang benar:
-   * `yolov8m.pt` (Bisa diunduh otomatis via library ultralytics)
-   * `best.pt` (Hasil *fine-tuning* dataset khusus infrastruktur jalan)
-2. Ubah variabel `INPUT_VIDEO_PATH` pada file eksekusi atau Jupyter Notebook mengarah ke lokasi file `.mp4` target.
-3. Jalankan *cell* eksekusi Master Code. 
+1. Ensure the model files are in the correct directory:
+   * `yolov8m.pt` (Can be downloaded automatically via the ultralytics library)
+   * `best.pt` (Result of fine-tuning on a specific road infrastructure dataset)
+2. Change the `INPUT_VIDEO_PATH` variable in the execution file or Jupyter Notebook to point to the target `.mp4` file location.
+3. Run the Master Code execution cell.
 4. **Output**:
-   * Sistem akan menampilkan di terminal/console keputusan skenario mana yang dieksekusi.
-   * Video hasil proses dengan *overlay* metrik akan tersimpan di dalam folder *working*.
-   * Semua foto *capture* pelanggaran akan diekstrak ke dalam `violations/` dan dikompres menjadi file arsip `.zip`.
+   * The system will display the chosen scenario decision in the terminal/console.
+   * The processed video with metric overlays will be saved in the working directory.
+   * All captured violation photos will be extracted into the `violations/` folder and compressed into a `.zip` archive file.
 
-## 🔬 Evaluasi & Limitasi Saat Ini
+## 🔬 Evaluation & Current Limitations
 
-Berdasarkan pengujian, akurasi adaptasi modul Quick Scan mencapai 97.9%. Akan tetapi, sistem saat ini masih memiliki beberapa area untuk pengembangan lanjutan:
+Based on testing, the Quick Scan module's adaptation accuracy reached 97.9%. However, the current system still has several areas for future improvement:
 
-* **Tailgating Violator Problem (Skenario 3)**: Kendaraan yang mengikuti dengan jarak sangat dekat di belakang pelanggar utama terkadang mewarisi nilai memori inersia, menyebabkan *false negatives*. Pengembangan masa depan akan mencakup *Kinematic Profile Analysis* (turunan *jerk*) untuk memisahkan akselerasi sah dan tidak sah.
-* **Y-Coordinate Crossing Bypass**: Pada video dengan fps rendah (<15 fps) atau kendaraan berkecepatan sangat tinggi, resolusi temporal bisa terputus. Solusi ke depan difokuskan pada interpolasi lintasan sub-frame.
-* **Akurasi Inferensi saat Kemacetan Parah (Skenario 2)**: Pola pergerakan *stop-and-go* di kemacetan bisa memicu deteksi lampu MERAH *(false positive)*.
+* **Tailgating Violator Problem (Scenario 3)**: Vehicles following very closely behind the main violator sometimes inherit inertia memory values through the queue immunity mechanism, causing false negatives. Future development will include Kinematic Profile Analysis (jerk derivative) to distinguish between legitimate acceleration and violation pursuit.
+* **Y-Coordinate Crossing Bypass**: In low fps videos (<15 fps) or with very high-speed vehicles, temporal resolution can fail. Future solutions will focus on sub-frame trajectory interpolation.
+* **Inference Errors in Heavy Congestion (Scenario 2)**: Stop-and-go movement patterns during severe congestion can trigger a RED light false positive detection.
