@@ -25,8 +25,8 @@ By default, this system's development environment utilizes Kaggle GPU infrastruc
 
 1. Clone this repository:
 ```bash
-   git clone [https://github.com/username/your-repo.git](https://github.com/username/your-repo.git)
-   cd your-repo
+   git clone https://github.com/cvl-kelompok-3/traffic-light-crossing-violation.git
+   cd traffic-light-crossing-violation
    ```
 
 2. Install all required dependencies:
