@@ -55,3 +55,34 @@ Based on testing, the Quick Scan module's adaptation accuracy reached 97.9%. How
 * **Tailgating Violator Problem (Scenario 3)**: Vehicles following very closely behind the main violator sometimes inherit inertia memory values through the queue immunity mechanism, causing false negatives. Future development will include Kinematic Profile Analysis (jerk derivative) to distinguish between legitimate acceleration and violation pursuit.
 * **Y-Coordinate Crossing Bypass**: In low fps videos (<15 fps) or with very high-speed vehicles, temporal resolution can fail. Future solutions will focus on sub-frame trajectory interpolation.
 * **Inference Errors in Heavy Congestion (Scenario 2)**: Stop-and-go movement patterns during severe congestion can trigger a RED light false positive detection.
+
+# 📂 Full Input and Output Data
+
+Due to GitHub file size limitations, the complete experimental files are provided through external cloud storage.
+
+The full resources include:
+
+* Input traffic videos
+* Output detection videos
+* Violation capture results
+* Experimental outputs
+
+## 🔗 Download Links
+
+### Input and Output Videos
+
+[https://drive.google.com/drive/folders/1HWTXJNhX1vs4BY64GP-5-eaR-rGgyHot?usp=drive_link]
+
+## 📌 Notes
+
+Please download the required files before running the project locally.
+
+The repository only contains:
+
+* Source code
+* Trained YOLO models
+* Documentation
+* IEEE report
+* Configuration files
+
+Large files are stored externally to maintain repository efficiency and comply with GitHub storage limitations.
