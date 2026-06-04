@@ -56,7 +56,7 @@ Based on testing, the Quick Scan module's adaptation accuracy reached 97.9%. How
 * **Y-Coordinate Crossing Bypass**: In low fps videos (<15 fps) or with very high-speed vehicles, temporal resolution can fail. Future solutions will focus on sub-frame trajectory interpolation.
 * **Inference Errors in Heavy Congestion (Scenario 2)**: Stop-and-go movement patterns during severe congestion can trigger a RED light false positive detection.
 
-# 📂 Full Input and Output Data
+## 📂 Full Input and Output Data
 
 Due to GitHub file size limitations, the complete experimental files are provided through external cloud storage.
 
